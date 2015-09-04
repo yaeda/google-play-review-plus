@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Google Play Review Plus",
+  "description": "Display precise google play review score",
+  "version": "0.2.1",
+  "icons": {
+    "16": "images/icon_16.png",
+    "48": "images/icon_48.png",
+    "128": "images/icon_128.png"
+  },
+  "permissions": [
+    "https://play.google.com/store/apps/*",
+    "https://play.google.com/apps/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://play.google.com/store/apps/*",
+        "https://play.google.com/apps/*"
+      ],
+      "js": ["main.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
