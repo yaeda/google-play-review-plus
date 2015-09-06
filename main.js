@@ -1,4 +1,5 @@
-var SCORE_BOX_CLASS_NAME = 'GPRP-score-box';
+var CLASS_NAME_SCORE_BOX_PARENT = 'GPRP-score-box-parent';
+var CLASS_NAME_SCORE_BOX = 'GPRP-score-box';
 
 // from '3,000' to 3000
 function atoi (a) {
@@ -44,9 +45,30 @@ function calcPreciseScore (scoreInfoList) {
   return sumScore / sumNumber;
 }
 
-function updateScore (element, score) {
+function updateScoreAndStyle (score) {
   var score4fixed = score.toFixed(4);
-  element.textContent = score4fixed;
+  var styleText = [
+    '.' + CLASS_NAME_SCORE_BOX_PARENT + '{',
+    '  width: 200px;',
+    '}',
+    '.' + CLASS_NAME_SCORE_BOX + ' {',
+    '  position: relative;',
+    '}',
+    '.' + CLASS_NAME_SCORE_BOX + ':after {',
+    '  content: "' + score4fixed + '";',
+    '  position: absolute;',
+    '  top: 0;',
+    '  left: 0;',
+    '  background: white;',
+    '}',
+    '.' + CLASS_NAME_SCORE_BOX_PARENT + ':hover .' + CLASS_NAME_SCORE_BOX + ':after {',
+    '  display: none;',
+    '}'
+  ].join('');
+
+  var style = document.createElement('style');
+  style.appendChild(document.createTextNode(styleText));
+  document.body.appendChild(style);
 }
 
 function precise() {
@@ -66,17 +88,13 @@ function precise() {
   var score = calcPreciseScore(scoreInfoList);
 
   // update score
+  updateScoreAndStyle(score);
   var scoreElement = getScoreElement(score);
-  updateScore(scoreElement, score);
-  addClass(scoreElement.parentElement, SCORE_BOX_CLASS_NAME);
+  addClass(scoreElement, CLASS_NAME_SCORE_BOX);
+  addClass(scoreElement.parentElement, CLASS_NAME_SCORE_BOX_PARENT);
 }
 
 window.onhashchange = function () {
   precise();
 };
 precise();
-
-// set style (widen width of score box)
-var style = document.createElement('style');
-style.appendChild(document.createTextNode('.' + SCORE_BOX_CLASS_NAME + ' { width: 200px; }'));
-document.body.appendChild(style);
