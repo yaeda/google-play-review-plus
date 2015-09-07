@@ -1,14 +1,30 @@
 var CLASS_NAME_SCORE_BOX_PARENT = 'GPRP-score-box-parent';
 var CLASS_NAME_SCORE_BOX = 'GPRP-score-box';
+var ID_NAME_TOTAL_RATINGS = 'GPRP-total-ratings';
+var ID_NAME_TOTAL_RATINGS_WITH_REVIEWS = 'GPRP-total-ratings-with-reviews';
 
 // from '3,000' to 3000
 function atoi (a) {
   return parseInt(a.split(',').join('').trim());
 }
 
-function addClass(element, className) {
+function addClass (element, className) {
   if (!element.classList.contains(className)) {
     element.classList.add(className);
+  }
+}
+
+function addId (element, idName) {
+  element.id = idName;
+}
+
+function getElementWithText (root, tag, text) {
+  var candidates = root.querySelectorAll(tag);
+  for (var i = 0, l = candidates.length; i < l; i++) {
+    var candidate = candidates[i];
+    if (candidate.textContent.trim() === text) {
+      return candidate;
+    }
   }
 }
 
@@ -26,13 +42,7 @@ function getScoreInfoList () {
 
 function getScoreElement (score) {
   var score2fixed = score.toFixed(2);
-  var candidates = document.querySelectorAll('div');
-  for (var i = 0, l = candidates.length; i < l; i++) {
-    var candidate = candidates[i];
-    if (candidate.textContent === score2fixed) {
-      return candidate;
-    }
-  }
+  return getElementWithText(document, 'div', score2fixed);
 }
 
 function calcPreciseScore (scoreInfoList) {
@@ -63,7 +73,20 @@ function updateScoreAndStyle (score) {
     '}',
     '.' + CLASS_NAME_SCORE_BOX_PARENT + ':hover .' + CLASS_NAME_SCORE_BOX + ':after {',
     '  display: none;',
-    '}'
+    '}',
+    '#' + ID_NAME_TOTAL_RATINGS + '{',
+    '  width: 50%;',
+    '  float: left;',
+    '  border-bottom: none;',
+    '}',
+    '#' + ID_NAME_TOTAL_RATINGS_WITH_REVIEWS + '{',
+    '  width: 50%;',
+    '  float: left;',
+    '  padding-top: 0;',
+    '  padding-bottom: 15px;',
+    '  padding-left: 15px;',
+    '  border-left: 1px solid #ddd;',
+    '}',
   ].join('');
 
   var style = document.createElement('style');
@@ -92,6 +115,11 @@ function precise() {
   var scoreElement = getScoreElement(score);
   addClass(scoreElement, CLASS_NAME_SCORE_BOX);
   addClass(scoreElement.parentElement, CLASS_NAME_SCORE_BOX_PARENT);
+  var overviewElement = scoreElement.parentElement.parentElement;
+  var totalRatingsElement = getElementWithText(overviewElement, 'div', 'Total Ratings');
+  var totalRatingsWRElement = getElementWithText(overviewElement, 'div', 'Total Ratings with Reviews');
+  addId(totalRatingsElement.parentElement, ID_NAME_TOTAL_RATINGS);
+  addId(totalRatingsWRElement.parentElement, ID_NAME_TOTAL_RATINGS_WITH_REVIEWS);
 }
 
 window.onhashchange = function () {
