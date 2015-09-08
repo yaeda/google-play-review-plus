@@ -28,6 +28,18 @@ function getElementWithText (root, tag, text) {
   }
 }
 
+function getElementsWithText (root, tag, text) {
+  var elements = [];
+  var candidates = root.querySelectorAll(tag);
+  for (var i = 0, l = candidates.length; i < l; i++) {
+    var candidate = candidates[i];
+    if (candidate.textContent.trim() === text) {
+      elements.push(candidate);
+    }
+  }
+  return elements;
+}
+
 function getScoreInfoList () {
   var scoreInfoList = [];
   var numberList = document.querySelectorAll('[title="The number of ratings made."]');
@@ -86,7 +98,7 @@ function updateScoreAndStyle (score) {
     '  padding-bottom: 15px;',
     '  padding-left: 15px;',
     '  border-left: 1px solid #ddd;',
-    '}',
+    '}'
   ].join('');
 
   var style = document.createElement('style');
@@ -95,19 +107,8 @@ function updateScoreAndStyle (score) {
 }
 
 function precise() {
-  // check the page url
-  if (!window.location.hash.startsWith('#ReviewsPlace')) {
-    return;
-  }
-
-  // check the loding state
-  var scoreInfoList = getScoreInfoList();
-  if (scoreInfoList.length !== 5) {
-    requestAnimationFrame(precise);
-    return;
-  }
-
   // calculate score
+  var scoreInfoList = getScoreInfoList();
   var score = calcPreciseScore(scoreInfoList);
 
   // update score
@@ -122,7 +123,43 @@ function precise() {
   addId(totalRatingsWRElement.parentElement, ID_NAME_TOTAL_RATINGS_WITH_REVIEWS);
 }
 
-window.onhashchange = function () {
-  precise();
-};
-precise();
+function openReviews (lang) {
+  var targetText = 'Auto-translated from ' + lang;
+  var elements = getElementsWithText(document, 'a', targetText);
+  for (var i = 0, l = elements.length; i < l; i++) {
+    var element = elements[i];
+    element.nextElementSibling.click();
+  }
+}
+
+function isCorrectURL () {
+  return window.location.hash.startsWith('#ReviewsPlace');
+}
+
+function isLoaded () {
+  var scoreInfoList = getScoreInfoList();
+  return scoreInfoList.length === 5;
+}
+
+// main funciton
+(function () {
+  (function polish () {
+    if (!isCorrectURL()) {
+      return;
+    }
+
+    if (!isLoaded()) {
+      requestAnimationFrame(polish);
+      return;
+    }
+
+    // show precise review score
+    precise();
+    // open reviews
+    openReviews('Japanese');
+  })();
+
+  window.onhashchange = function () {
+    polish();
+  };
+})();
