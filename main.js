@@ -143,7 +143,7 @@ function isLoaded () {
 
 // main funciton
 (function () {
-  (function polish () {
+  function polish () {
     if (!isCorrectURL()) {
       return;
     }
@@ -157,9 +157,10 @@ function isLoaded () {
     precise();
     // open reviews
     openReviews('Japanese');
-  })();
+  }
 
   window.onhashchange = function () {
     polish();
   };
+  polish();
 })();
