@@ -1,7 +1,5 @@
 var CLASS_NAME_SCORE_BOX_PARENT = 'GPRP-score-box-parent';
 var CLASS_NAME_SCORE_BOX = 'GPRP-score-box';
-var ID_NAME_TOTAL_RATINGS = 'GPRP-total-ratings';
-var ID_NAME_TOTAL_RATINGS_WITH_REVIEWS = 'GPRP-total-ratings-with-reviews';
 
 // from '3,000' to 3000
 function atoi (a) {
@@ -12,10 +10,6 @@ function addClass (element, className) {
   if (!element.classList.contains(className)) {
     element.classList.add(className);
   }
-}
-
-function addId (element, idName) {
-  element.id = idName;
 }
 
 function getElementWithText (root, tag, text) {
@@ -86,19 +80,6 @@ function updateScoreAndStyle (score) {
     '.' + CLASS_NAME_SCORE_BOX_PARENT + ':hover .' + CLASS_NAME_SCORE_BOX + ':after {',
     '  display: none;',
     '}',
-    '#' + ID_NAME_TOTAL_RATINGS + '{',
-    '  width: 50%;',
-    '  float: left;',
-    '  border-bottom: none;',
-    '}',
-    '#' + ID_NAME_TOTAL_RATINGS_WITH_REVIEWS + '{',
-    '  width: 50%;',
-    '  float: left;',
-    '  padding-top: 0;',
-    '  padding-bottom: 15px;',
-    '  padding-left: 15px;',
-    '  border-left: 1px solid #ddd;',
-    '}'
   ].join('');
 
   var style = document.createElement('style');
@@ -116,11 +97,6 @@ function precise() {
   var scoreElement = getScoreElement(score);
   addClass(scoreElement, CLASS_NAME_SCORE_BOX);
   addClass(scoreElement.parentElement, CLASS_NAME_SCORE_BOX_PARENT);
-  var overviewElement = scoreElement.parentElement.parentElement;
-  var totalRatingsElement = getElementWithText(overviewElement, 'div', 'Total Ratings');
-  var totalRatingsWRElement = getElementWithText(overviewElement, 'div', 'Total Ratings with Reviews');
-  addId(totalRatingsElement.parentElement, ID_NAME_TOTAL_RATINGS);
-  addId(totalRatingsWRElement.parentElement, ID_NAME_TOTAL_RATINGS_WITH_REVIEWS);
 }
 
 function openReviews (lang) {
