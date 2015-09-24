@@ -100,11 +100,11 @@ function precise() {
 }
 
 function openReviews (lang) {
-  var targetText = 'Auto-translated from ' + lang;
+  var targetText = 'Auto-translated from ' + lang + ' - show original review';
   var elements = getElementsWithText(document, 'a', targetText);
   for (var i = 0, l = elements.length; i < l; i++) {
     var element = elements[i];
-    element.nextElementSibling.click();
+    element.children[0].click();
   }
 }
 
