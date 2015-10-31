@@ -36,7 +36,7 @@ function getElementsWithText (root, tag, text) {
 
 function getScoreInfoList () {
   var scoreInfoList = [];
-  var numberList = document.querySelectorAll('[title="The number of ratings made."]');
+  var numberList = document.querySelectorAll('[title~="ratings"]');
   for (var i = 0, l = numberList.length; i < l; i++) {
     scoreInfoList.push({
       number: atoi(numberList[i].textContent),
