@@ -102,10 +102,9 @@ function precise() {
 function openReviews (lang) {
   var targetText = 'Auto-translated from ' + lang + ' - show original review';
   var elements = getElementsWithText(document, 'a', targetText);
-  for (var i = 0, l = elements.length; i < l; i++) {
-    var element = elements[i];
-    element.children[0].click();
-  }
+  elements.forEach(function (element) {
+    element.click();
+  });
 }
 
 function isRatingURL () {
@@ -116,27 +115,39 @@ function isReviewURL () {
   return window.location.hash.startsWith('#ReviewsPlace');
 }
 
-function isLoaded () {
+function isRatingLoaded () {
   var scoreInfoList = getScoreInfoList();
   return scoreInfoList.length === 5;
+}
+
+function isReviewLoaded () {
+  return document.getElementsByTagName('article').length !== 0;
 }
 
 // main funciton
 (function () {
   function polish () {
-    if (!isRatingURL()) {
-      return;
+    var needsRequest = false;
+    if (isRatingURL()) {
+      if (isRatingLoaded()) {
+        // show precise review score
+        precise();
+      } else {
+        needsRequest = true;
+      }
+    } else if (isReviewURL()) {
+      if (isReviewLoaded()) {
+        // open reviews
+        openReviews('Japanese');
+      } else {
+        needsRequest = true;
+      }
     }
 
-    if (!isLoaded()) {
+    if (needsRequest) {
       requestAnimationFrame(polish);
       return;
     }
-
-    // show precise review score
-    precise();
-    // open reviews
-    openReviews('Japanese');
   }
 
   window.onhashchange = function () {
