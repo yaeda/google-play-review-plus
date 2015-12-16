@@ -108,7 +108,11 @@ function openReviews (lang) {
   }
 }
 
-function isCorrectURL () {
+function isRatingURL () {
+  return window.location.hash.startsWith('#RatingsPlace');
+}
+
+function isReviewURL () {
   return window.location.hash.startsWith('#ReviewsPlace');
 }
 
@@ -120,7 +124,7 @@ function isLoaded () {
 // main funciton
 (function () {
   function polish () {
-    if (!isCorrectURL()) {
+    if (!isRatingURL()) {
       return;
     }
 
