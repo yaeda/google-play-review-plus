@@ -47,7 +47,7 @@ function getScoreInfoList () {
 }
 
 function getScoreElement (score) {
-  var score2fixed = score.toFixed(2);
+  var score2fixed = score.toFixed(3);
   return getElementWithText(document, 'div', score2fixed);
 }
 
