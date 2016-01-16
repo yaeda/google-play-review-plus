@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Google Play Review Plus",
   "description": "Display precise google play review score",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "icons": {
     "16": "images/icon_16.png",
     "48": "images/icon_48.png",
